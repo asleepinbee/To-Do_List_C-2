@@ -116,6 +116,8 @@
                           Command="{Binding DataContext.CompleteTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                           CommandParameter="{Binding}"/>
                             <!-- Передаем задачу в качестве параметра -->
+                            <TextBlock Text="{Binding Deadline, StringFormat='Deadline: {0:MM/dd/yyyy HH:mm}'}" Foreground="{Binding DeadlineColor}"/>
+                            <Button Content="Open" Width="75" Command="{Binding DataContext.OpenTaskCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using To_Do_List.Models;
 
@@ -17,17 +18,18 @@ public class DatabaseService
         {
             connection.Open();
             string createCategoryTable = @"CREATE TABLE IF NOT EXISTS Categories (
-                                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                            Name TEXT NOT NULL)";
-            string createTaskTable = @"CREATE TABLE IF NOT EXISTS Tasks (
                                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                        Title TEXT NOT NULL,
-                                        Description TEXT,
-                                        IsCompleted INTEGER,
-                                        CreationDate DATETIME,
-                                        Priority INTEGER,
-                                        CategoryId INTEGER,
-                                        FOREIGN KEY(CategoryId) REFERENCES Categories(Id))";
+                                        Name TEXT NOT NULL)";
+            string createTaskTable = @"CREATE TABLE IF NOT EXISTS Tasks (
+                                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    Title TEXT NOT NULL,
+                                    Description TEXT,
+                                    IsCompleted INTEGER,
+                                    CreationDate DATETIME,
+                                    Deadline DATETIME,  -- Новый столбец для дэдлайна
+                                    Priority INTEGER,
+                                    CategoryId INTEGER,
+                                    FOREIGN KEY(CategoryId) REFERENCES Categories(Id))";
             var command = new SQLiteCommand(createCategoryTable, connection);
             command.ExecuteNonQuery();
             command.CommandText = createTaskTable;
@@ -71,10 +73,11 @@ public class DatabaseService
                     Id = reader.GetInt32(0),
                     Title = reader.GetString(1),
                     Description = reader.GetString(2),
-                    IsCompleted = reader.GetInt32(3) == 1,  
+                    IsCompleted = reader.GetInt32(3) == 1,
                     CreationDate = reader.GetDateTime(4),
-                    Priority = (PriorityLevel)reader.GetInt32(5),
-                    CategoryId = reader.GetInt32(6)
+                    Deadline = reader.IsDBNull(5) ? (DateTime?)null : reader.GetDateTime(5), // Получаем дэдлайн, если он установлен
+                    Priority = (PriorityLevel)reader.GetInt32(6),
+                    CategoryId = reader.GetInt32(7)
                 });
             }
         }
@@ -98,11 +101,12 @@ public class DatabaseService
         using (var connection = new SQLiteConnection(ConnectionString))
         {
             connection.Open();
-            var command = new SQLiteCommand("INSERT INTO Tasks (Title, Description, IsCompleted, CreationDate, Priority, CategoryId) VALUES (@Title, @Description, @IsCompleted, @CreationDate, @Priority, @CategoryId)", connection);
+            var command = new SQLiteCommand("INSERT INTO Tasks (Title, Description, IsCompleted, CreationDate, Deadline, Priority, CategoryId) VALUES (@Title, @Description, @IsCompleted, @CreationDate, @Deadline, @Priority, @CategoryId)", connection);
             command.Parameters.AddWithValue("@Title", task.Title);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@IsCompleted", task.IsCompleted ? 1 : 0);
             command.Parameters.AddWithValue("@CreationDate", task.CreationDate);
+            command.Parameters.AddWithValue("@Deadline", task.Deadline ?? (object)DBNull.Value);  // Учитываем, что дэдлайн может быть пустым
             command.Parameters.AddWithValue("@Priority", (int)task.Priority);
             command.Parameters.AddWithValue("@CategoryId", task.CategoryId);
             command.ExecuteNonQuery();
@@ -114,11 +118,12 @@ public class DatabaseService
         using (var connection = new SQLiteConnection(ConnectionString))
         {
             connection.Open();
-            var command = new SQLiteCommand("UPDATE Tasks SET Title = @Title, Description = @Description, Priority = @Priority, IsCompleted = @IsCompleted WHERE Id = @Id", connection);
+            var command = new SQLiteCommand("UPDATE Tasks SET Title = @Title, Description = @Description, Priority = @Priority, IsCompleted = @IsCompleted, Deadline = @Deadline WHERE Id = @Id", connection);
             command.Parameters.AddWithValue("@Title", task.Title);
             command.Parameters.AddWithValue("@Description", task.Description);
             command.Parameters.AddWithValue("@Priority", (int)task.Priority);
-            command.Parameters.AddWithValue("@IsCompleted", task.IsCompleted ? 1 : 0);  // Сохраняем состояние IsCompleted
+            command.Parameters.AddWithValue("@IsCompleted", task.IsCompleted ? 1 : 0);
+            command.Parameters.AddWithValue("@Deadline", task.Deadline ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@Id", task.Id);
             command.ExecuteNonQuery();
         }

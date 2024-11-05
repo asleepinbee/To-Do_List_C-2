@@ -47,6 +47,7 @@ namespace To_Do_List
         public ICommand DeleteTaskCommand { get; set; }
         public ICommand EditCategoryCommand { get; set; }
         public ICommand EditTaskCommand { get; set; }
+        public ICommand OpenTaskCommand { get; set; }
 
         public ViewModel()
         {
@@ -61,6 +62,17 @@ namespace To_Do_List
             DeleteTaskCommand = new RelayCommand(DeleteTask);
             EditCategoryCommand = new RelayCommand(EditCategory);
             EditTaskCommand = new RelayCommand(EditTask);
+            OpenTaskCommand = new RelayCommand<TaskItem>(OpenTask); // Добавляем команду "Открыть"
+        }
+
+        private void OpenTask(TaskItem task)
+        {
+            if (task != null)
+            {
+                // Открываем окно для просмотра задачи с кнопкой "Отмена"
+                var viewTaskWindow = new AddTaskWindow(task, isReadOnly: true);
+                viewTaskWindow.ShowDialog();
+            }
         }
 
         private void LoadTasksForCategory()
@@ -109,6 +121,7 @@ namespace To_Do_List
                         Priority = addTaskWindow.TaskPriority,
                         CreationDate = DateTime.Now,
                         IsCompleted = false,
+                        Deadline = addTaskWindow.TaskDeadline,
                         CategoryId = SelectedCategory.Id
                     };
 
@@ -199,6 +212,7 @@ namespace To_Do_List
                     SelectedTask.Title = editTaskWindow.TaskTitle;
                     SelectedTask.Description = editTaskWindow.TaskDescription;
                     SelectedTask.Priority = editTaskWindow.TaskPriority;
+                    SelectedTask.Deadline = editTaskWindow.TaskDeadline;
                     _databaseService.UpdateTask(SelectedTask);
                     LoadTasksForCategory();
                 }
