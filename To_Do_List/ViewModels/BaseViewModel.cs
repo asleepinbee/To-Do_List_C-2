@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace To_Do_List
+namespace To_Do_List.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

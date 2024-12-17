@@ -12,12 +12,12 @@ namespace To_Do_List
         public ValidationErrorWindow(string message)
         {
             InitializeComponent();
-            MessageTextBlock.Text = message; // Устанавливаем текст ошибки
+            MessageTextBlock.Text = message; 
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); // Закрываем окно при нажатии "OK"
+            this.Close(); 
         }
     }
 

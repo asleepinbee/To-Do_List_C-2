@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using To_Do_List.ViewModels;
 
 namespace To_Do_List.Models
 {
@@ -14,7 +15,7 @@ namespace To_Do_List.Models
         public string Description { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime? Deadline { get; set; } // Новый атрибут для дэдлайна
+        public DateTime? Deadline { get; set; } 
         public PriorityLevel Priority { get; set; }
         public int CategoryId { get; set; }
 
@@ -23,15 +24,14 @@ namespace To_Do_List.Models
             get
             {
                 if (!Deadline.HasValue)
-                    return Brushes.White; // Цвет по умолчанию, если дэдлайн не установлен
-
+                    return Brushes.White; 
                 var timeRemaining = Deadline.Value - DateTime.Now;
                 if (timeRemaining > TimeSpan.FromDays(1))
-                    return Brushes.Green; // До дэдлайна далеко
+                    return Brushes.Green; 
                 else if (timeRemaining <= TimeSpan.FromDays(1) && timeRemaining > TimeSpan.Zero)
-                    return Brushes.Yellow; // Остается ровно сутки
+                    return Brushes.Yellow;
                 else
-                    return Brushes.Red; // Дэдлайн прошел
+                    return Brushes.Red; 
             }
         }
     }

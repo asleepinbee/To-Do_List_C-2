@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace To_Do_List
+namespace To_Do_List.Converters
 {
 
     public class EmptyStringToVisibilityConverter : IValueConverter

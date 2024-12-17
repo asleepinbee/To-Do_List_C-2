@@ -87,27 +87,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddCategoryWindow.xaml.cs">
+    <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
+    <Compile Include="Views\AddCategoryWindow.xaml.cs">
       <DependentUpon>AddCategoryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddTaskWindow.xaml.cs">
+    <Compile Include="Views\AddTaskWindow.xaml.cs">
       <DependentUpon>AddTaskWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BaseViewModel.cs" />
-    <Compile Include="DatabaseService.cs" />
-    <Compile Include="EmptyStringToVisibilityConverter.cs" />
-    <Compile Include="RelayCommand.cs" />
-    <Compile Include="ValidationErrorWindow.xaml.cs">
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="Service\DatabaseService.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Views\ValidationErrorWindow.xaml.cs">
       <DependentUpon>ValidationErrorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel.cs" />
-    <Page Include="AddCategoryWindow.xaml">
+    <Compile Include="ViewModels\ViewModel.cs" />
+    <Page Include="Views\AddCategoryWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddTaskWindow.xaml">
+    <Page Include="Views\AddTaskWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -115,11 +115,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ValidationErrorWindow.xaml">
+    <Page Include="Views\ValidationErrorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\_\source\repos\To_Do_List\To_Do_List\App.xaml
-4-817810603
+41425953473
 
-17192336897
+17-753095417
 128-983613076
-AddCategoryWindow.xaml;AddTaskWindow.xaml;MainWindow.xaml;ValidationErrorWindow.xaml;
+Views\AddCategoryWindow.xaml;Views\AddTaskWindow.xaml;Views\MainWindow.xaml;Views\ValidationErrorWindow.xaml;
 
 True
 
